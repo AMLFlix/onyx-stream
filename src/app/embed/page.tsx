@@ -1,8 +1,10 @@
 "use client";
 
+import { Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 
-export default function EmbedPlayerPage() {
+// useSearchParams သုံးမည့် အပိုင်းကို သီးသန့် Component ခွဲထုတ်ခြင်း
+function EmbedPlayerContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const rawUrl = searchParams.get('url');
@@ -44,5 +46,18 @@ export default function EmbedPlayerPage() {
 
       </div>
     </main>
+  );
+}
+
+// Main Page တွင် Suspense ဖြင့် ပြန်လည်အုပ်ပေးခြင်း
+export default function EmbedPlayerPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-[#000000] flex items-center justify-center text-white text-sm">
+        Loading player...
+      </div>
+    }>
+      <EmbedPlayerContent />
+    </Suspense>
   );
 }
