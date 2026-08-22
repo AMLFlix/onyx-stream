@@ -63,11 +63,12 @@ export default function PlayerPage() {
           enableWorker: true,
           xhrSetup: function(xhr, url) {
             try {
-              if (referer && referer !== 'none') {
-                xhr.setRequestHeader('X-Custom-Referer', decodeURIComponent(referer));
+              // 🟢 Null နှင့် None များကို သေချာစစ်ထုတ်ထားပါသည်
+              if (referer && referer !== 'none' && referer !== 'null') {
+                xhr.setRequestHeader('X-Custom-Referer', referer);
               }
-              if (userAgent && userAgent !== 'none') {
-                xhr.setRequestHeader('X-Custom-User-Agent', decodeURIComponent(userAgent));
+              if (userAgent && userAgent !== 'none' && userAgent !== 'null') {
+                xhr.setRequestHeader('X-Custom-User-Agent', userAgent);
               }
             } catch (e) {
               console.warn("Browser blocked setting custom headers.", e);
@@ -223,11 +224,11 @@ export default function PlayerPage() {
           </div>
 
           <div className="flex-1 flex items-center justify-center" onClick={togglePlay}>
-             {!isPlaying && !isBuffering && (
-               <div className="w-16 h-16 bg-[#00E676]/90 backdrop-blur-md rounded-full flex items-center justify-center pl-1 cursor-pointer hover:scale-110 transition-transform">
-                 <svg width="32" height="32" viewBox="0 0 24 24" fill="black"><path d="M5 3l14 9-14 9V3z"/></svg>
-               </div>
-             )}
+              {!isPlaying && !isBuffering && (
+                <div className="w-16 h-16 bg-[#00E676]/90 backdrop-blur-md rounded-full flex items-center justify-center pl-1 cursor-pointer hover:scale-110 transition-transform">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="black"><path d="M5 3l14 9-14 9V3z"/></svg>
+                </div>
+              )}
           </div>
 
           <div className="w-full p-4 bg-gradient-to-t from-black/90 to-transparent">

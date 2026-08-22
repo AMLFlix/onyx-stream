@@ -198,9 +198,20 @@ export default async function MatchDetail({ params }: { params: Promise<{ id: st
                 {match.servers.map((server: any, idx: number) => {
                   const encodedUrl = Buffer.from(server.url || 'empty').toString('base64');
                   
+                  // 🟢 URL Parameter များကို ဤနေရာတွင် တည်ဆောက်ပါမည်
+                  const params = new URLSearchParams();
+                  params.append('data', encodedUrl);
+                  
+                  if (server.referer && server.referer !== "none" && server.referer !== "null") {
+                    params.append('referer', server.referer);
+                  }
+                  if (server.user_agent && server.user_agent !== "none" && server.user_agent !== "null") {
+                    params.append('ua', server.user_agent);
+                  }
+                  
                   const linkUrl = (server.isEmbed === 1 || server.url?.includes("youtu")) 
-                    ? `/embed?data=${encodedUrl}` 
-                    : `/player/${match.match_id}?data=${encodedUrl}`;
+                    ? `/embed?${params.toString()}` 
+                    : `/player/${match.match_id}?${params.toString()}`;
 
                   return (
                     <Link 
